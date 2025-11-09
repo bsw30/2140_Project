@@ -11,6 +11,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.search.similarities.BM25Similarity;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -38,10 +39,12 @@ public class Indexer {
         // 3. IndexWriterConfig: Configuration for the IndexWriter
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setOpenMode(OpenMode.CREATE); // Always recreate the index for this project
-
+        config.setSimilarity(new BM25Similarity());
+        
         // 4. IndexWriter: Core component for adding documents
         this.writer = new IndexWriter(indexDir, config);
         System.out.println("Indexer initialized. Index location: " + INDEX_DIRECTORY);
+        System.out.println("Using BM25 similarity for ranking.");
     }
 
     public void close() throws IOException {

@@ -45,4 +45,7 @@ Query>
 ## To Push to Repository
 git remote add origin https://github.com/bsw30/2140_Project.git
 git branch -M main
-git push -u origin main
+git push origin main
+
+## To Pull
+git pull --rebase origin main

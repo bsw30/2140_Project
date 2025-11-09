@@ -10,10 +10,13 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.queryparser.classic.ParseException; // 💡 Import for clarity
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Searcher {
@@ -27,6 +30,28 @@ public class Searcher {
     // 💡 Simplification: Use MultiFieldQueryParser directly since that is what it holds
     private MultiFieldQueryParser parser; 
     private static final int MAX_RESULTS = 10;
+
+    private static class SearchResult {
+        public int rank;
+        public float score;
+        public String id;
+        public String title;
+        public String url;
+        
+        public SearchResult(int rank, float score, String id, String title, String url) {
+            this.rank = rank;
+            this.score = score;
+            this.id = id;
+            this.title = title;
+            this.url = url;
+        }
+        
+        @Override
+        public String toString() {
+            return String.format("%d. [Score: %.4f] %s (ID: %s)\n   URL: %s", 
+                                rank, score, title, id, url);
+        }
+    }
 
     public Searcher() throws IOException {
         // 1. IndexReader: Read-only access to the index
@@ -48,11 +73,14 @@ public class Searcher {
         // in one of the fields, rather than just one word (which is the default 'OR').
         parser.setDefaultOperator(MultiFieldQueryParser.Operator.AND);
         
+        searcher.setSimilarity(new BM25Similarity());
+        
         System.out.println("Searcher initialized. Ready to query " + String.join(" and ", SEARCH_FIELDS) + ".");
+        System.out.println("Using BM25 similarity for ranking.");
     }
 
-    // 💡 Added ParseException to method signature for clearer error handling
-    public void performSearch(String queryString) throws IOException, ParseException {
+    public List<SearchResult> performSearch(String queryString) throws IOException, ParseException {
+        List<SearchResult> results = new ArrayList<>();
         System.out.println("\nSearching for: \"" + queryString + "\"");
 
         // Convert the user's string input into a Lucene Query object
@@ -60,28 +88,30 @@ public class Searcher {
         Query query = parser.parse(queryString);
 
         // Execute the search
-        TopDocs results = searcher.search(query, MAX_RESULTS);
-        ScoreDoc[] hits = results.scoreDocs;
+        TopDocs docs = searcher.search(query, MAX_RESULTS);
+        ScoreDoc[] hits = docs.scoreDocs;
 
         if (hits.length == 0) {
             System.out.println("No results found.");
-            return;
+            return results;
         }
 
-        System.out.println("Found " + results.totalHits.value + " hits (showing top " + hits.length + "):");
+        System.out.println("Found " + docs.totalHits.value + " hits (showing top " + hits.length + "):");
 
         // Iterate through the results and print the document details
         for (int i = 0; i < hits.length; i++) {
             Document doc = searcher.doc(hits[i].doc);
-            
-            // Note: We can only retrieve fields that were stored (Field.Store.YES)
+            String id = doc.get("id");
             String title = doc.get("title");
             String url = doc.get("url");
-
-            System.out.printf("%d. Score: %.4f | Title: %s (ID: %s)\n", 
-                              (i + 1), hits[i].score, title, doc.get("id"));
-            System.out.println("   URL: " + url);
+            float score = hits[i].score;
+            
+            SearchResult result = new SearchResult(i + 1, score, id, title, url);
+            results.add(result);
+            System.out.println(result.toString());
         }
+        
+        return results;
     }
 
     public void close() throws IOException {
