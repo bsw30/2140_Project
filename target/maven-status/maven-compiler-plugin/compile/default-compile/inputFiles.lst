@@ -1,0 +1,12 @@
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/Indexer.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/Searcher.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/IndexBuilderMain.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/ItchsearchApplication.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/controller/SearchController.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/model/Game.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/model/GameDocument.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/service/GameIndexWriter.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/service/GameSearchService.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/util/Stemmer.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/util/TextPreprocessor.java
+/Users/briannawilliams/Desktop/INFSCI 2140/2140_Project/src/main/java/com/itchsearch/util/TrectextCorpusReader.java

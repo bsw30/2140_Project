@@ -76,6 +76,13 @@
             <version>20240303</version>
         </dependency>
 
+        <!-- OpenCSV dependency -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>5.9</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
@@ -90,8 +97,33 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>add-source</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Tell Maven to look for source files in src/main/ -->
+                            <sources>
+                                <source>src/main</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- Main class must be explicitly set for a runnable JAR -->
+                    <mainClass>com.itchsearch.ItchsearchApplication</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

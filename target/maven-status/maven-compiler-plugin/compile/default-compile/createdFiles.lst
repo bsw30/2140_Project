@@ -1,0 +1,13 @@
+com/itchsearch/model/GameDocument.class
+com/itchsearch/util/TrectextCorpusReader.class
+com/itchsearch/model/Game.class
+com/itchsearch/service/GameIndexWriter.class
+main/java/Searcher$SearchResult.class
+com/itchsearch/IndexBuilderMain.class
+com/itchsearch/ItchsearchApplication.class
+main/java/Searcher.class
+com/itchsearch/util/Stemmer.class
+com/itchsearch/util/TextPreprocessor.class
+com/itchsearch/controller/SearchController.class
+com/itchsearch/service/GameSearchService.class
+main/java/Indexer.class
