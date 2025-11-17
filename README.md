@@ -50,6 +50,8 @@ itchsearch/
 
 ## How to Run
 
+Before running the commands below, open a terminal and cd into the folder that directly contains pom.xml.
+
 ### 1. Build the project
 
 Windows:
@@ -58,11 +60,19 @@ Windows:
 
 macOS/Linux:
 
+    chmod +x mvnw
+
     ./mvnw clean package
 
 ### 2. Generate index files
 
+Windows:
+
     java -cp "target/classes;target/dependency/*" com.itchsearch.IndexBuilderMain
+
+macOS/Linux:
+
+    java -cp "target/classes:target/dependency/*" com.itchsearch.IndexBuilderMain
 
 ### 3. Start backend
 
