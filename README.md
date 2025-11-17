@@ -62,7 +62,7 @@ macOS/Linux:
 
 ### 2. Generate index files
 
-    java -cp target/itchsearch-0.0.1-SNAPSHOT.jar com.itchsearch.IndexBuilderMain
+    java -cp "target/classes;target/dependency/*" com.itchsearch.IndexBuilderMain
 
 ### 3. Start backend
 
