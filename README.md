@@ -84,7 +84,7 @@ Backend runs at: http://localhost:8080
 
 Open: `src/main/resources/static/index.html`
 
-Then enter keywords (e.g., "action", "date") to test search.
+Then, based on the current dataset, enter keywords (e.g., "action", "horror", "echoes", "whispers", "pack") to test the search.
 
 ## Notes
 
