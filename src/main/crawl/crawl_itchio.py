@@ -73,39 +73,5 @@ if __name__ == "__main__":
     # INPUT: keywords
     keywords = ["Minit", "Jan Willem Nijman", "2D Adventure", "Time-Loop"]
 
-# what I've crawled------------------------------------
-
-# # A Short Hike
-# keywords = ["A Short Hike", "Claire", "3D Adventure", "Exploration"]V
-
-# # OneShot
-# keywords = ["OneShot", "Niko", "RPG", "Meta-Narrative"]V
-
-# # Baba Is You
-# keywords = ["Baba Is You", "Baba", "Puzzle", "Rules"]V
-
-# # Celeste Classic
-# keywords = ["Celeste Classic", "Madeline", "Platformer", "Pico-8"]V
-
-# # Night in the Woods
-# keywords = ["Night in the Woods", "Mae Borowski", "Narrative", "Psychological"]V
-
-# # Doki Doki Literature Club!
-# keywords = ["Doki Doki Literature Club!", "Monika", "Visual Novel", "Horror"]V
-
-# # Witch Beam 
-# keywords = ["Witch Beam", "Witch Beam", "Developer", "Action"]V
-
-# # Hidden Folks
-# keywords = ["Hidden Folks", "Adriaan de Jongh", "Hidden Object", "Hand-Drawn"]V
-
-# # Long Gone Days
-# keywords = ["Long Gone Days", "Rourke", "JRPG", "Military"]V
-
-# # Minit
-# keywords = ["Minit", "Jan Willem Nijman", "2D Adventure", "Time-Loop"]V
-
-# -----------------------------------------------------
-
     for kw in keywords:
         crawl_itchio(kw)
