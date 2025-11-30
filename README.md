@@ -9,8 +9,8 @@ The system includes:
 • A preprocessing pipeline and indexing step
 
 ## Project Structure
-
-itchsearch/
+```
+2140_Project/
 ├── .mvn/
 │   └── wrapper/
 │       └── maven-wrapper.properties
@@ -18,6 +18,9 @@ itchsearch/
 │   └── index/                # Will contain generated index files after Step 1
 ├── src/
 │   └── main/
+│       ├── crawl/
+│       |   ├── crawl_itchio.py                   # web crawler for itch.io
+│       |   └── merge_trectext.py                 # merge every search dataset
 │       ├── java/
 │       │   └── com/itchsearch/
 │       │       ├── controller/       
@@ -36,7 +39,8 @@ itchsearch/
 │       │       └── ItchsearchApplication.java     # Step 2: Start backend
 │       └── resources/
 │           ├── data/
-│           │   └── itchio_dataset_full.trectext
+│           │   ├── itchio_dataset_full.trectext
+│           │   └── merged_itchio_dataset.trectext # New Dataset
 │           ├── static/
 │           │   ├── index.html
 │           │   ├── index-styles.css
@@ -47,8 +51,11 @@ itchsearch/
 ├── mvnw.cmd
 ├── pom.xml
 └── README.md
+```
 
 ## How to Run
+
+Before running the commands below, open a terminal and cd into the folder that directly contains pom.xml.
 
 ### 1. Build the project
 
@@ -58,11 +65,19 @@ Windows:
 
 macOS/Linux:
 
+    chmod +x mvnw
+
     ./mvnw clean package
 
 ### 2. Generate index files
 
-    java -cp target/itchsearch-0.0.1-SNAPSHOT.jar com.itchsearch.IndexBuilderMain
+Windows:
+
+    java -cp "target/classes;target/dependency/*" com.itchsearch.IndexBuilderMain
+
+macOS/Linux:
+
+    java -cp "target/classes:target/dependency/*" com.itchsearch.IndexBuilderMain
 
 ### 3. Start backend
 
@@ -74,9 +89,54 @@ Backend runs at: http://localhost:8080
 
 Open: `src/main/resources/static/index.html`
 
-Then enter keywords (e.g., "action", "date") to test search.
+Then, based on the current dataset, enter keywords (e.g., "action", "horror", "echoes", "whispers", "pack") to test the search.
 
 ## Notes
 
 • No need to install Maven manually (Maven Wrapper included).\
 • Requires Java 17 or above.
+
+## Generating Custom Data
+
+If you wish to create and index your own personalized dataset, follow these two steps using Python 3:
+
+### 1. Customize Scraping Keywords
+
+To specify which game data to scrape, you need to modify the list of target keywords:
+
+* **File Location:** Open `crawl_itchio.py`.
+* **Action:** Edit the `keywords` list located inside the `main` function.
+
+```python
+# Example of modification inside crawl_itchio.py
+def main():
+    # Change this list to your desired search terms
+    keywords = ["keyword1", "keyword2", "etc"] 
+```
+### 2. Run the Data Pipeline
+Execute the following two Python scripts sequentially in your terminal to scrape the data and then merge it into the required `.trectext` format for indexing:
+
+#### Run Scraper:
+
+    python3 src/main/crawl/crawl_itchio.py
+
+#### Merge Data Files:
+
+    python3 src/main/crawl/merge_trectext.py
+
+## Indexed Data Samples
+
+This list provides examples of the entities and keywords indexed by the Lucene search engine. The values in the **Keywords** column can be used to test the search functionality and demonstrate data coverage.
+
+| Game / Entity | Core Genre / Category | Relevant Keywords / Entity |
+| :--- | :--- | :--- |
+| A Short Hike | 3D Adventure, Exploration | Claire |
+| OneShot | RPG, Meta-Narrative | Niko |
+| Baba Is You | Puzzle, Rules | Baba |
+| Celeste Classic | Platformer, Pico-8 | Madeline |
+| Night in the Woods | Narrative, Psychological | Mae Borowski |
+| Doki Doki Literature Club! | Visual Novel, Horror | Monika |
+| Witch Beam | Developer, Action | Witch Beam |
+| Hidden Folks | Hidden Object, Hand-Drawn | Adriaan de Jongh |
+| Long Gone Days | JRPG, Military | Rourke |
+| Minit | 2D Adventure, Time-Loop | Jan Willem Nijman |
