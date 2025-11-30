@@ -90,6 +90,12 @@ public class TrectextCorpusReader implements AutoCloseable {
                 continue;
             }
 
+            if (line.startsWith("<TEXT>") && line.endsWith("</TEXT>")) {
+                String textContent = extractTagContent(line, "TEXT");
+                textBuilder.append(textContent);
+                continue;
+            }
+
             if (line.equals("<TEXT>")) {
                 inText = true;
                 continue;

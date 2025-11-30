@@ -49,7 +49,6 @@ public class TextPreprocessor {
 
         String[] tokens = text.split("[^a-zA-Z0-9]+");
         StringBuilder processed = new StringBuilder();
-        Stemmer stemmer = new Stemmer();
 
         for (String token : tokens) {
             if (token.isEmpty()) continue;
@@ -58,6 +57,7 @@ public class TextPreprocessor {
 
             if (stopwords.contains(token)) continue;
 
+            Stemmer stemmer = new Stemmer();
             char[] chars = token.toCharArray();
             stemmer.add(chars, chars.length);
             stemmer.stem();
