@@ -10,14 +10,15 @@ import java.util.Set;
 
 @Component
 public class TextPreprocessor {
-    
+
     private Set<String> stopwords;
-    
+
     public TextPreprocessor() {
         this.stopwords = new HashSet<>();
         loadStopwords();
     }
-    
+
+    //Load stopwords from resources file
     private void loadStopwords() {
         try {
             InputStream is = getClass().getClassLoader().getResourceAsStream("stopwords.txt");
@@ -39,28 +40,29 @@ public class TextPreprocessor {
             System.err.println("Error loading stopwords: " + e.getMessage());
         }
     }
-    
+
+    //Preprocess text with tokenization, lowercase, stopword removal and stemming
     public String preprocess(String text) {
         if (text == null || text.trim().isEmpty()) {
             return "";
         }
-        
+
         String[] tokens = text.split("[^a-zA-Z0-9]+");
         StringBuilder processed = new StringBuilder();
         Stemmer stemmer = new Stemmer();
-        
+
         for (String token : tokens) {
             if (token.isEmpty()) continue;
-            
+
             token = token.toLowerCase();
-            
+
             if (stopwords.contains(token)) continue;
-            
+
             char[] chars = token.toCharArray();
             stemmer.add(chars, chars.length);
             stemmer.stem();
             String stemmedToken = stemmer.toString();
-            
+
             if (!stemmedToken.isEmpty()) {
                 if (processed.length() > 0) {
                     processed.append(" ");
@@ -68,7 +70,7 @@ public class TextPreprocessor {
                 processed.append(stemmedToken);
             }
         }
-        
+
         return processed.toString();
     }
 }

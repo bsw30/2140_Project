@@ -8,306 +8,263 @@
     <link rel="stylesheet" href="results-styles.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <div class="logo-icon">🎮</div>
-                ProtoSys
-            </a>
-            <nav>
-                <a href="#">Browse Games</a>
-                <a href="#">Game Jams</a>
-                <a href="#">Upload Game</a>
-                <a href="#">Developer Logs</a>
-                <a href="#">Community</a>
-            </nav>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search for games, jams, tags or creators" value="">
-                <button class="search-icon"></button>
-            </div>
-            <div class="auth-buttons">
-                <a href="#" class="btn btn-login">Log in</a>
-                <a href="#" class="btn btn-register">Register</a>
-            </div>
+<header>
+    <div class="header-content">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🎮</div>
+            ProtoSys
+        </a>
+        <nav>
+            <a href="#">Browse Games</a>
+            <a href="#">Game Jams</a>
+            <a href="#">Upload Game</a>
+            <a href="#">Developer Logs</a>
+            <a href="#">Community</a>
+        </nav>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for games, jams, tags or creators" value="">
+            <button class="search-icon"></button>
         </div>
-    </header>
-
-    <div class="container">
-        <!-- Main Search Content -->
-        <main class="search-content">
-            <div class="search-header">
-                <h1 class="search-title">Search results for '<span id="searchTerm"></span>'</h1>
-            </div>
-
-            <div class="filters-wrapper">
-                <!-- Type Label and Filter Tabs in one line -->
-                <div class="filter-tabs-wrapper">
-                    <span class="type-label">Type</span>
-                    <div class="filter-tabs">
-                        <button class="filter-tab">Projects</button>
-                        <button class="filter-tab">Jams</button>
-                        <button class="filter-tab arrow">»</button>
-                        <button class="filter-tab active">Everything</button>
-                        <button class="filter-tab">Games</button>
-                        <button class="filter-tab">Game assets</button>
-                        <button class="filter-tab">Game mods</button>
-                        <button class="filter-tab">Physical games</button>
-                        <button class="filter-tab">Albums & soundtracks</button>
-                        <button class="filter-tab">Tools</button>
-                        <button class="filter-tab">Comics</button>
-                        <button class="filter-tab">Books</button>
-                    </div>
-                </div>
-
-                <!-- Tag Filters Section -->
-                <div class="tag-filters-section">
-                    <div class="tag-filters-header">
-                        <span class="tag-icon">🏷️</span>
-                        TAGS
-                        <a href="#" class="view-all-tags">(view all tags)</a>
-                    </div>
-                    <div class="tag-filters">
-                        <button class="tag-filter">World War I</button>
-                        <button class="tag-filter">Playdate</button>
-                        <button class="tag-filter">Dating Sim</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="results-wrapper">
-                <div class="results-grid" id="resultsContainer">
-                    <!-- Example static results for demonstration: -->
-                </div>
-
-                <!-- Pagination -->
-                <div class="pagination">
-                    <button class="page-btn">← Previous</button>
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">3</button>
-                    <button class="page-btn">4</button>
-                    <button class="page-btn">5</button>
-                    <button class="page-btn">Next →</button>
-                </div>
-            </div>
-        </main>
+        <div class="auth-buttons">
+            <a href="#" class="btn btn-login">Log in</a>
+            <a href="#" class="btn btn-register">Register</a>
+        </div>
     </div>
+</header>
 
-    <script>
-        // Sample data structure - simplified to match backend JSON format
-        const sampleResults = [
-            {
-                title: "Date Me Super Senpai",
-                fullDescription: "This is a placeholder for the full description that will be loaded from your backend data. You can include detailed game information, features, storyline, and other relevant content here.",
-                author: "SAY SI",
-                price: "FREE",
-                thumbnail: "Date Me Super Senpai"
-            },
-            {
-                title: "DATE KNIGHT",
-                fullDescription: "Full description from backend will appear here. This text box provides space for comprehensive game descriptions and details.",
-                author: "monkey kg",
-                price: "FREE",
-                thumbnail: "DATE KNIGHT"
-            },
-            {
-                title: "Date Warp",
-                fullDescription: "Detailed game description will be populated from your backend data source.",
-                author: "Hanako Games",
-                price: "$10",
-                thumbnail: "Date Warp"
-            },
-            {
-                title: "Date in the Dungeon - demo",
-                fullDescription: "This area is reserved for extended game descriptions from your backend.",
-                author: "Ria-games",
-                price: "FREE",
-                thumbnail: "Date in the Dungeon"
-            }
-        ];
+<div class="container">
+    <main class="search-content">
+        <div class="search-header">
+            <h1 class="search-title">Search results for '<span id="searchTerm"></span>'</h1>
+        </div>
 
-        // Function to fetch results from Spring Boot backend (JSON format)
-        function fetchResultsFromBackend(searchQuery) {
-            const apiUrl = `http://localhost:8080/api/search?query=${encodeURIComponent(searchQuery)}`;
-
-            // Add timeout to fetch request
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Request timeout')), 3000)
-            );
-            
-            Promise.race([
-                fetch(apiUrl).then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text().then(text => {
-                        try {
-                            const decoder = new TextDecoder("utf-8");
-                            const decoded = decoder.decode(new TextEncoder().encode(text));
-                            return JSON.parse(decoded);
-                        } catch (e) {
-                            console.error("Failed to decode UTF-8 JSON:", e);
-                            return JSON.parse(text);
-                        }
-                    });
-                }),
-                timeoutPromise
-            ])
-                .then(data => {
-                    // Expected JSON format from backend:
-                    // [
-                    //   {
-                    //     "title": "Game Title",
-                    //     "author": "Author Name",
-                    //     "price": "FREE" or "$10",
-                    //     "thumbnail": "Thumbnail text (optional)",
-                    //     "fullDescription": "Game description (optional)"
-                    //   }
-                    // ]
-                    renderResults(data);
-                })
-                .catch(error => {
-                    console.error('Error fetching results from backend:', error);
-                    // Fallback to sample data if backend is not available
-                    console.log('Using sample data instead...');
-                    renderResults(sampleResults);
-                });
-        }
-
-        // global variable to store the current search term
-        let currentSearchQuery = "";
-
-        // highlight function
-        function highlightText(text, query) {
-            if (!query || !text) return text;
-            const regex = new RegExp(`(${query})`, "gi");
-            return text.replace(regex, '<span class="highlight">$1</span>');
-        }
-
-        // RENDER RESULTS FUNCTION
-        function renderResults(results) {
-            console.log("Rendering results:", results);
-            const container = document.getElementById('resultsContainer');
-            container.innerHTML = '';
-
-            results.forEach(result => {
-                const card = document.createElement('div');
-                card.className = 'result-card';
-
-                const isFree = result.price && result.price.toUpperCase() === 'FREE';
-                const hasUrl = !!(result.url && result.url.trim());
-                const titleHtml = hasUrl
-                    ? `<a class="result-link" href="${result.url}" target="_blank" rel="noopener noreferrer">${result.title}</a>`
-                    : `${result.title}`;
-                const thumbHtml = hasUrl
-                    ? `<a class="result-thumb-link" href="${result.url}" target="_blank" rel="noopener noreferrer">
-                <img src="${result.thumbnail || 'https://via.placeholder.com/200x120?text=No+Image'}" alt="Thumbnail">
-              </a>`
-                    : `<img src="${result.thumbnail || 'https://via.placeholder.com/200x120?text=No+Image'}" alt="Thumbnail">`;
-
-                card.innerHTML = `
-        <div class="result-left">
-            <div class="result-thumbnail">${thumbHtml}</div>
-            <div class="result-info">
-                <div class="result-title">${titleHtml}</div>
-                <div class="result-meta">
-                    <span class="result-author">${result.author || 'Unknown Author'}</span>
+        <div class="filters-wrapper">
+            <div class="filter-tabs-wrapper">
+                <span class="type-label">Type</span>
+                <div class="filter-tabs">
+                    <button class="filter-tab">Projects</button>
+                    <button class="filter-tab">Jams</button>
+                    <button class="filter-tab arrow">»</button>
+                    <button class="filter-tab active">Everything</button>
+                    <button class="filter-tab">Games</button>
+                    <button class="filter-tab">Game assets</button>
+                    <button class="filter-tab">Game mods</button>
+                    <button class="filter-tab">Physical games</button>
+                    <button class="filter-tab">Albums & soundtracks</button>
+                    <button class="filter-tab">Tools</button>
+                    <button class="filter-tab">Comics</button>
+                    <button class="filter-tab">Books</button>
                 </div>
-                <div class="result-meta">
-                    <span class="result-price ${isFree ? 'free' : ''}">${result.price || 'N/A'}</span>
+            </div>
+
+            <div class="tag-filters-section">
+                <div class="tag-filters-header">
+                    <span class="tag-icon">🏷️</span>
+                    TAGS
+                    <a href="#" class="view-all-tags">(view all tags)</a>
+                </div>
+                <div class="tag-filters">
+                    <button class="tag-filter">World War I</button>
+                    <button class="tag-filter">Playdate</button>
+                    <button class="tag-filter">Dating Sim</button>
                 </div>
             </div>
         </div>
-        <div class="result-description-box">
-            ${highlightText(result.fullDescription || '<em>No description available</em>', currentSearchQuery)}
+
+        <div class="results-wrapper">
+            <div class="results-grid" id="resultsContainer"></div>
+
+            <div class="pagination">
+                <button class="page-btn">← Previous</button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <button class="page-btn">4</button>
+                <button class="page-btn">5</button>
+                <button class="page-btn">Next →</button>
+            </div>
         </div>
+    </main>
+</div>
+
+<script>
+    //Sample data for fallback if backend unavailable
+    const sampleResults = [
+        {
+            title: "Date Me Super Senpai",
+            fullDescription: "This is a placeholder for the full description that will be loaded from your backend data. You can include detailed game information, features, storyline, and other relevant content here.",
+            author: "SAY SI",
+            price: "FREE",
+            thumbnail: "Date Me Super Senpai"
+        },
+        {
+            title: "DATE KNIGHT",
+            fullDescription: "Full description from backend will appear here. This text box provides space for comprehensive game descriptions and details.",
+            author: "monkey kg",
+            price: "FREE",
+            thumbnail: "DATE KNIGHT"
+        },
+        {
+            title: "Date Warp",
+            fullDescription: "Detailed game description will be populated from your backend data source.",
+            author: "Hanako Games",
+            price: "$10",
+            thumbnail: "Date Warp"
+        },
+        {
+            title: "Date in the Dungeon - demo",
+            fullDescription: "This area is reserved for extended game descriptions from your backend.",
+            author: "Ria-games",
+            price: "FREE",
+            thumbnail: "Date in the Dungeon"
+        }
+    ];
+
+    //Fetch search results from Spring Boot backend with stemmed query support
+    function fetchResultsFromBackend(searchQuery) {
+        const apiUrl = `http://localhost:8080/api/search?query=${encodeURIComponent(searchQuery)}`;
+
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Request timeout')), 3000)
+        );
+
+        Promise.race([
+            fetch(apiUrl).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text().then(text => {
+                    try {
+                        const decoder = new TextDecoder("utf-8");
+                        const decoded = decoder.decode(new TextEncoder().encode(text));
+                        return JSON.parse(decoded);
+                    } catch (e) {
+                        console.error("Failed to decode UTF-8 JSON:", e);
+                        return JSON.parse(text);
+                    }
+                });
+            }),
+            timeoutPromise
+        ])
+            .then(data => {
+                console.log("Received data from backend:", data);
+
+                //Check if new format with stemmedQuery and results
+                if (data.stemmedQuery && data.results) {
+                    currentSearchQuery = data.stemmedQuery;
+                    renderResults(data.results);
+                } else if (Array.isArray(data)) {
+                    //Old format with direct array
+                    currentSearchQuery = searchQuery;
+                    renderResults(data);
+                } else {
+                    //Unknown format fallback
+                    console.error("Unexpected data format:", data);
+                    renderResults([]);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching results from backend:', error);
+                console.log('Using sample data instead.');
+                renderResults(sampleResults);
+            });
+    }
+
+    //Global variable to store current search query
+    let currentSearchQuery = "";
+
+    //Render search results to page
+    function renderResults(results) {
+        console.log("Rendering results:", results);
+        const container = document.getElementById('resultsContainer');
+        container.innerHTML = '';
+
+        results.forEach(result => {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+
+            const isFree = result.price && result.price.toUpperCase() === 'FREE';
+            const hasUrl = !!(result.url && result.url.trim());
+
+            const titleHtml = hasUrl
+                ? `<a class="result-link" href="${result.url}" target="_blank" rel="noopener noreferrer">${result.title}</a>`
+                : `${result.title}`;
+
+            const thumbHtml = hasUrl
+                ? `<a class="result-thumb-link" href="${result.url}" target="_blank" rel="noopener noreferrer">
+                    <img src="${result.thumbnail || 'https://via.placeholder.com/200x120?text=No+Image'}" alt="Thumbnail">
+               </a>`
+                : `<img src="${result.thumbnail || 'https://via.placeholder.com/200x120?text=No+Image'}" alt="Thumbnail">`;
+
+            //Use backend-highlighted HTML if available
+            const descriptionHtml =
+                result.highlightedDescription ||
+                result.fullDescription ||
+                '<em>No description available</em>';
+
+            card.innerHTML = `
+            <div class="result-left">
+                <div class="result-thumbnail">${thumbHtml}</div>
+                <div class="result-info">
+                    <div class="result-title">${titleHtml}</div>
+                    <div class="result-meta">
+                        <span class="result-author">${result.author || 'Unknown Author'}</span>
+                    </div>
+                    <div class="result-meta">
+                        <span class="result-price ${isFree ? 'free' : ''}">${result.price || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="result-description-box">
+                ${descriptionHtml}
+            </div>
         `;
 
-                container.appendChild(card);
-            });
-        }
+            container.appendChild(card);
+        });
+    }
 
+    //Update search term in page title and input box
+    function updateSearchTerm(searchQuery) {
+        const searchInput = document.getElementById('searchInput');
+        const searchTermDisplay = document.getElementById('searchTerm');
 
-        // SEARCH FUNCTIONALITY
-        // Function to update search term in the page
-        // This updates both the search input box and the "Search results for" title
-        function updateSearchTerm(searchQuery) {
-            const searchInput = document.getElementById('searchInput');
-            const searchTermDisplay = document.getElementById('searchTerm');
-            
-            searchInput.value = searchQuery;
-            searchTermDisplay.textContent = searchQuery;
-        }
-        
-        // Function to perform search and load results
-        function performSearch(searchQuery) {
-            currentSearchQuery = searchQuery;
-            updateSearchTerm(searchQuery);
-            fetchResultsFromBackend(searchQuery);
-        }
-        
-        // Listen for search button click
-        document.querySelector('.search-icon').addEventListener('click', function() {
-            const searchQuery = document.getElementById('searchInput').value;
+        searchInput.value = searchQuery;
+        searchTermDisplay.textContent = searchQuery;
+    }
+
+    //Perform search and load results
+    function performSearch(searchQuery) {
+        currentSearchQuery = searchQuery;
+        updateSearchTerm(searchQuery);
+        fetchResultsFromBackend(searchQuery);
+    }
+
+    //Handle search button click
+    document.querySelector('.search-icon').addEventListener('click', function () {
+        const searchQuery = document.getElementById('searchInput').value;
+        performSearch(searchQuery);
+    });
+
+    //Handle Enter key in search box
+    document.getElementById('searchInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const searchQuery = this.value;
             performSearch(searchQuery);
-        });
-        
-        // Listen for Enter key in search box
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                const searchQuery = this.value;
-                performSearch(searchQuery);
-            }
-        });
+        }
+    });
 
+    //Load search query from URL on page load
+    document.addEventListener("DOMContentLoaded", function () {
+        const params = new URLSearchParams(window.location.search);
+        const keyword = params.get("query") || "";
 
-        // FILTER TAB FUNCTIONALITY
-        const filterTabs = document.querySelectorAll('.filter-tab');
-        filterTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                filterTabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                // TODO: Implement filter logic based on selected tab
-            });
-        });
+        if (keyword) {
+            updateSearchTerm(keyword);
+            performSearch(keyword);
+        }
+    });
 
-
-        // TAG FILTER FUNCTIONALITY
-        const tagFilters = document.querySelectorAll('.tag-filter');
-        tagFilters.forEach(tag => {
-            tag.addEventListener('click', function() {
-                // TODO: Implement tag filtering logic
-                console.log('Filter by tag:', this.textContent);
-            });
-        });
-
-
-        // PAGINATION FUNCTIONALITY
-        const pageButtons = document.querySelectorAll('.page-btn');
-        pageButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
-                if (this.textContent.includes('Previous') || this.textContent.includes('Next')) {
-                    // TODO: Implement previous/next page logic
-                    return;
-                }
-                pageButtons.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                // TODO: Load results for selected page
-            });
-        });
-
-        // Read search query from URL and trigger the search
-        document.addEventListener("DOMContentLoaded", function () {
-            const params = new URLSearchParams(window.location.search);
-            const keyword = params.get("query") || "";
-
-            if (keyword) {
-                updateSearchTerm(keyword);
-                performSearch(keyword);
-            }
-        });
-
-    </script>
+</script>
 </body>
 </html>

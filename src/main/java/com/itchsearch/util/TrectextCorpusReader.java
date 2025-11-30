@@ -7,20 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Reads game data from TRECTEXT format file
- *
- * Expected Format:
- * <DOC>
- * <DOCNO>game-id</DOCNO>
- * <TITLE>Game Title$9.99</TITLE>
- * <AUTHOR>Author Name</AUTHOR>
- * <URL>https://example.com</URL>
- * <TEXT>
- * Description text...
- * </TEXT>
- * </DOC>
- */
+//Reads game data from TRECTEXT format file
 public class TrectextCorpusReader implements AutoCloseable {
 
     private BufferedReader br;
@@ -33,10 +20,7 @@ public class TrectextCorpusReader implements AutoCloseable {
         br = new BufferedReader(reader);
     }
 
-    /**
-     * Read next document from TRECTEXT file
-     * @return GameDocument or null if end of file
-     */
+    //Read next document from TRECTEXT file, return null if end of file
     public GameDocument nextDocument() throws IOException {
         String line;
         StringBuilder textBuilder = new StringBuilder();
@@ -125,6 +109,7 @@ public class TrectextCorpusReader implements AutoCloseable {
         return null;
     }
 
+    //Extract content between XML tags
     private String extractTagContent(String line, String tagName) {
         String open = "<" + tagName + ">";
         String close = "</" + tagName + ">";
