@@ -29,7 +29,6 @@ The system includes:
 │       │       │   ├── Game.java
 │       │       │   └── GameDocument.java
 │       │       ├── service/                       # Lucene indexing & search logic           
-│       │       │   ├── GameIndexWriter.java
 │       │       │   └── GameSearchService.java
 │       │       ├── util/                          # Preprocessing helpers
 │       │       │   ├── Stemmer.java
