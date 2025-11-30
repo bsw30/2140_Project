@@ -3,9 +3,9 @@
 This project is a Spring Boot + Lucene--based search engine that indexes
 and retrieves game descriptions from the itch.io dataset.
 
-The system includes: 
-• A Java backend (Lucene index + search service) 
-• An HTML/CSS frontend 
+The system includes: \
+• A Java backend (Lucene index + search service) \
+• An HTML/CSS frontend \
 • A preprocessing pipeline and indexing step
 
 ## Project Structure
@@ -86,6 +86,8 @@ Backend runs at: http://localhost:8080
 
 ### 4. Open frontend
 
+The frontend is a static webpage, so you do not run it through the terminal. \
+Instead, simply open the HTML file in a browser. \
 Open: `src/main/resources/static/index.html`
 
 Then, based on the current dataset, enter keywords (e.g., "action", "horror", "echoes", "whispers", "pack") to test the search.
@@ -127,15 +129,15 @@ Execute the following two Python scripts sequentially in your terminal to scrape
 
 This list provides examples of the entities and keywords indexed by the Lucene search engine. The values in the **Keywords** column can be used to test the search functionality and demonstrate data coverage.
 
-| Game / Entity | Core Genre / Category | Relevant Keywords / Entity |
-| :--- | :--- | :--- |
-| A Short Hike | 3D Adventure, Exploration | Claire |
-| OneShot | RPG, Meta-Narrative | Niko |
-| Baba Is You | Puzzle, Rules | Baba |
-| Celeste Classic | Platformer, Pico-8 | Madeline |
-| Night in the Woods | Narrative, Psychological | Mae Borowski |
-| Doki Doki Literature Club! | Visual Novel, Horror | Monika |
-| Witch Beam | Developer, Action | Witch Beam |
-| Hidden Folks | Hidden Object, Hand-Drawn | Adriaan de Jongh |
-| Long Gone Days | JRPG, Military | Rourke |
-| Minit | 2D Adventure, Time-Loop | Jan Willem Nijman |
+| Game / Entity | Core Genre / Category | Relevant Keywords / Entity | Demo Status |
+| :--- | :--- | :--- | :--- |
+| A Short Hike | 3D Adventure, Exploration | Claire | ❗ No relevant keywords found |
+| OneShot | RPG, Meta-Narrative | surreal puzzle | ✅ Passed |
+| Baba Is You | Puzzle, Rules | award-winning puzzle game | ✅ Passed |
+| Celeste Classic | Platformer, Pico-8 | Maddy Thorson, Noel Berry | ✅ Passed |
+| Night in the Woods | Narrative, Psychological | Mae Borowski | ✅ Passed |
+| Doki Doki Literature Club! | Visual Novel, Horror | Monika | ⚠️ Partial |
+| Witch Beam | Developer, Action | Witch Beam | ❗ Results are different (maybe due to the dataset) |
+| Hidden Folks | Hidden Object, Hand-Drawn | Adriaan de Jongh, crocodiles | ✅ Passed(crocodiles) |
+| Long Gone Days | JRPG, Military | Rourke | ✅ Passed |
+| Minit | 2D Adventure, Time-Loop | Jan Willem Nijman | ✅ Passed |
