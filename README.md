@@ -125,6 +125,12 @@ Execute the following two Python scripts sequentially in your terminal to scrape
 
     python3 src/main/crawl/merge_trectext.py
 
+#### Dataset Size
+
+Our merged Itch.io dataset contains **2,679 TREC-formatted documents**. \
+Each document corresponds to one game entry retrieved from multiple keyword-based crawling sessions. \
+The dataset size exceeds the minimum course requirement (500–1,000 documents), providing sufficient material for retrieval, ranking, and evaluation experiments.
+
 ## Indexed Data Samples
 
 This list provides examples of the entities and keywords indexed by the Lucene search engine. The values in the **Keywords** column can be used to test the search functionality and demonstrate data coverage.
