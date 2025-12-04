@@ -94,14 +94,15 @@ Then, based on the current dataset, enter keywords (e.g., "action", "horror", "e
 
 
 ## SearchEvaluationTest Run Instructions
-./mvnw clean package
-java -jar target/itchsearch-0.0.1-SNAPSHOT.jar --evaluation
+• ./mvnw clean package
+• java -jar target/itchsearch-0.0.1-SNAPSHOT.jar --evaluation
 
 
 ## Notes
 
 • No need to install Maven manually (Maven Wrapper included).\
 • Requires Java 17 or above.
+
 
 ## Generating Custom Data
 
@@ -137,20 +138,3 @@ Our merged Itch.io dataset contains **2,679 TREC-formatted documents**. \
 Each document corresponds to one game entry retrieved from multiple keyword-based crawling sessions. \
 The dataset size exceeds the minimum course requirement (500–1,000 documents), providing sufficient material for retrieval, ranking, and evaluation experiments.
 
-## Indexed Data Samples
-
-This list provides examples of the entities and keywords indexed by the Lucene search engine. The values in the **Keywords** column can be used to test the search functionality and demonstrate data coverage.
-
-| Game / Entity | Core Genre / Category | Relevant Keywords / Entity | Demo Status |
-| :--- | :--- | :--- | :--- |
-| A Short Hike | 3D Adventure, Exploration | Hawk Peak Provincial Park | ❗ No relevant keywords found |
-| OneShot | RPG, Meta-Narrative | surreal puzzle | ✅ Passed |
-| Baba Is You | Puzzle, Rules | award-winning puzzle game | ✅ Passed |
-| Celeste Classic | Platformer, Pico-8 | Maddy Thorson, Noel Berry | ✅ Passed |
-| Night in the Woods | Narrative, Psychological | Mae Borowski | ✅ Passed |
-| Doki Doki Literature Club! | Visual Novel, Horror | Monika, Sayori, Natsuki, Yuri | ⚠️ Partial |
-| Hidden Folks | Hidden Object, Hand-Drawn | Adriaan de Jongh, crocodiles | ✅ Passed(crocodiles) |
-| Long Gone Days | JRPG, Military | Rourke | ✅ Passed |
-| Minit | 2D Adventure, Time-Loop | Jan Willem Nijman | ✅ Passed |
-| Echoes of the Fey | Woodsy Studio, Visual Novel | Sofya Rykov | ? |
-| ~~Witch Beam~~ | ~~Developer, Action~~ | ~~Witch Beam~~ | ~~-~~ |
