@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-@Order(1)
+@Order(1) // Run this first
 public class SearchEvaluationTest implements CommandLineRunner {
 
     @Autowired
@@ -23,12 +23,14 @@ public class SearchEvaluationTest implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        // FORCE IMMEDIATE OUTPUT
         System.out.println("========================================");
-        System.out.println("RUNNER EXECUTING");
+        System.out.println("COMMANDLINERUNNER EXECUTING NOW");
         System.out.println("Args: " + Arrays.toString(args));
         System.out.println("========================================");
-        System.out.flush();
+        System.out.flush(); // Force output
         
+        // Check if evaluation flag is present
         boolean hasEvalFlag = false;
         for (String arg : args) {
             if (arg.equals("--evaluation")) {
@@ -37,13 +39,18 @@ public class SearchEvaluationTest implements CommandLineRunner {
             }
         }
         
+        System.out.println("Evaluation flag found: " + hasEvalFlag);
+        System.out.flush();
+        
         if (!hasEvalFlag) {
             System.out.println("Web server mode - visit http://localhost:8080");
             return;
         }
         
         System.out.println("\n=== SEARCH ENGINE EVALUATION ===\n");
+        System.out.flush();
 
+        // 10 test queries
         String[][] testData = {
             {"Mae Borowski", "night in the woods,mae,psychological,narrative"},
             {"Jan Willem Nijman", "minit,jan willem,time-loop,2d adventure"},
@@ -58,11 +65,15 @@ public class SearchEvaluationTest implements CommandLineRunner {
         };
         
         int totalRelevant = 0;
+        int totalRetrieved = 0;
         List<Double> precisions = new ArrayList<>();
         
         for (int i = 0; i < testData.length; i++) {
             String query = testData[i][0];
             String[] keywords = testData[i][1].split(",");
+            
+            System.out.println("Testing query " + (i+1) + ": " + query);
+            System.out.flush();
             
             List<Game> results = searchService.searchGames(query, 10);
 
@@ -79,9 +90,10 @@ public class SearchEvaluationTest implements CommandLineRunner {
             
             double precision = results.size() > 0 ? (double)relevant / results.size() : 0;
             precisions.add(precision);
-            totalRelevant += relevant;
             
-            System.out.println("Query " + (i+1) + ": \"" + query + "\"");
+            totalRelevant += relevant;
+            totalRetrieved += results.size();
+            
             System.out.println("  Retrieved: " + results.size() + ", Relevant: " + relevant);
             System.out.println("  Precision@10: " + String.format("%.3f", precision));
             
@@ -89,16 +101,28 @@ public class SearchEvaluationTest implements CommandLineRunner {
                 System.out.println("    " + (j+1) + ". " + results.get(j).getTitle());
             }
             System.out.println();
+            System.out.flush();
         }
         
+        // Summary
         double avgPrecision = precisions.stream().mapToDouble(d -> d).average().orElse(0);
+        double avgRelevant = (double)totalRelevant / testData.length;
         
-        System.out.println("=== SUMMARY ===");
-        System.out.println("Total queries: " + testData.length);
+        System.out.println("=== SUMMARY STATISTICS ===");
+        System.out.println("Total queries tested: " + testData.length);
         System.out.println("Mean Precision@10: " + String.format("%.3f", avgPrecision));
-        System.out.println("Avg relevant: " + String.format("%.1f", (double)totalRelevant / testData.length));
+        System.out.println("Avg relevant retrieved: " + String.format("%.1f", avgRelevant));
         
+        if (avgPrecision >= 0.6) {
+            System.out.println("\nGood precision - majority of results are relevant");
+        } else {
+            System.out.println("\nModerate precision - some relevant results found");
+        }
+        
+        System.out.println("\n=== Evaluation Complete ===");
+        System.out.flush();
+        
+        // Shutdown Spring Boot
         System.exit(SpringApplication.exit(context, () -> 0));
     }
 }
-
