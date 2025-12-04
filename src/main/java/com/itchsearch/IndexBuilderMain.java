@@ -46,6 +46,8 @@ public class IndexBuilderMain {
             IndexWriterConfig config = new IndexWriterConfig(new WhitespaceAnalyzer());
             config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
+            // ========== Indexing Documents ========== //
+
             try (FSDirectory dir = FSDirectory.open(indexPath);
                  IndexWriter writer = new IndexWriter(dir, config);
                  TrectextCorpusReader reader = new TrectextCorpusReader(inputPath.toString())) {
@@ -87,6 +89,7 @@ public class IndexBuilderMain {
 
                 System.out.println("Indexed " + count + " documents successfully to: " + indexPath);
             }
+            // ====================================== //
 
         } catch (IOException e) {
             System.err.println("I/O error: " + e.getMessage());

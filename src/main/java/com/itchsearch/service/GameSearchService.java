@@ -30,6 +30,7 @@ public class GameSearchService {
     private static final String INDEX_DIR = "data/index";
     private static final double MU = 2000.0;
 
+    // ========== QUERY PROCESSING ========== //
     public List<Game> searchGames(String queryStr, int maxResults) {
         List<Game> results = new ArrayList<>();
         Path indexPath = Paths.get(System.getProperty("user.dir")).resolve(INDEX_DIR);
@@ -88,6 +89,7 @@ public class GameSearchService {
 
                 results.add(game);
             }
+        //====================================== //
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -153,6 +155,7 @@ public class GameSearchService {
     }
 
     //Score document using Query Likelihood Model with Dirichlet Prior Smoothing
+    // =============== RANKING =============== //
     private double scoreDocument(DirectoryReader reader, int docId, String[] queryTerms, long collectionLength)
             throws IOException {
 
@@ -193,6 +196,7 @@ public class GameSearchService {
 
         return score;
     }
+    // ====================================== //
 
     //Get document length from CONTENT field with caching
     private int getDocLength(DirectoryReader reader, int docId) throws IOException {

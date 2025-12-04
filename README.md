@@ -92,6 +92,12 @@ Open: `src/main/resources/static/index.html`
 
 Then, based on the current dataset, enter keywords (e.g., "action", "horror", "echoes", "whispers", "pack") to test the search.
 
+
+## SearchEvaluationTest Run Instructions
+./mvnw clean package
+java -jar target/itchsearch-0.0.1-SNAPSHOT.jar --evaluation
+
+
 ## Notes
 
 • No need to install Maven manually (Maven Wrapper included).\

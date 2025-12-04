@@ -42,6 +42,7 @@ public class TextPreprocessor {
     }
 
     //Preprocess text with tokenization, lowercase, stopword removal and stemming
+    // ========== TOKENIZATION & PROCESSING ========== //
     public String preprocess(String text) {
         if (text == null || text.trim().isEmpty()) {
             return "";
@@ -70,6 +71,7 @@ public class TextPreprocessor {
                 processed.append(stemmedToken);
             }
         }
+        // ============================================== //
 
         return processed.toString();
     }
