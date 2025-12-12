@@ -35,7 +35,8 @@ The system includes: \
 │       │       │   ├── TextPreprocessor.java
 │       │       │   └── TrectextCorpusReader.java
 │       │       ├── IndexBuilderMain.java          # Step 1: Build index
-│       │       └── ItchsearchApplication.java     # Step 2: Start backend
+│       │       ├── ItchsearchApplication.java     # Step 2: Start backend
+│       │       └── SearchEvaluationTest.java
 │       └── resources/
 │           ├── data/
 │           │   ├── itchio_dataset_full.trectext
@@ -86,16 +87,18 @@ Backend runs at: http://localhost:8080
 
 ### 4. Open frontend
 
-The frontend is a static webpage, so you do not run it through the terminal. \
-Instead, simply open the HTML file in a browser. \
-Open: `src/main/resources/static/index.html`
+The frontend is a static webpage.\
+You can either\
+(1) open your browser and enter the backend address shown above (http://localhost:8080), or\
+(2) directly open the HTML file in a browser: `src/main/resources/static/index.html`
 
-Then, based on the current dataset, enter keywords (e.g., "action", "horror", "echoes", "whispers", "pack") to test the search.
 
+### SearchEvaluationTest Run Instructions
+```
+./mvnw clean package
 
-## SearchEvaluationTest Run Instructions
-• ./mvnw clean package
-• java -jar target/itchsearch-0.0.1-SNAPSHOT.jar --evaluation
+java -jar target/itchsearch-0.0.1-SNAPSHOT.jar --evaluation
+```
 
 
 ## Notes
